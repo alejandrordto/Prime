@@ -50,23 +50,26 @@ public class Control extends java.lang.Thread {
         boolean flag = true;
         while (flag) {
             try {
-                int foundPrimes = 0;
-                    Control.sleep(TMILISECONDS);
-                    for (int i = 0; i < NTHREADS; i++) {
+                ArrayList<Integer> foundPrimes = new ArrayList<Integer>();
+                this.sleep(TMILISECONDS);
+                for (int i = 0; i < NTHREADS; i++) {
 
-                        pft[i].shutdown();
-                        foundPrimes += pft[i].getPrimes().size();
-                    }
-                    System.out.print("Se han encontrado " + foundPrimes + " Primos.");
-                    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-                    String input = br.readLine();
-                    synchronized (SYNCRO) {
-                        SYNCRO.notifyAll();
-                    }
-                    for (int i = 0; i < NTHREADS; i++) {
-                        pft[i].lightup();
-                    }
-                
+                    pft[i].shutdown();
+
+                }
+                for (int i = 0; i < NTHREADS; i++) {
+
+                    foundPrimes.addAll(pft[i].getPrimes());
+                }
+                System.out.print("Se han encontrado " + foundPrimes.size() + " Primos.");
+                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+                String input = br.readLine();
+                synchronized (SYNCRO) {
+                    SYNCRO.notifyAll();
+                }
+                for (int i = 0; i < NTHREADS; i++) {
+                    pft[i].lightup();
+                }
 
             } catch (IOException ex) {
                 Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
@@ -75,18 +78,18 @@ public class Control extends java.lang.Thread {
                 Logger.getLogger(Control.class.getName()).log(Level.SEVERE, null, ex);
             }
             flag = pft[0].isAlive();
-            
+
             for (int i = 1; i < NTHREADS; i++) {
                 flag = flag || pft[i].isAlive();
-                
+
             }
         }
         flag = pft[0].isAlive();
-            int foundPrimes = 0;
-            for (int i = 1; i < NTHREADS; i++) {
-                flag = flag || pft[i].isAlive();
-                foundPrimes += pft[i].getPrimes().size();
-            }
-            System.out.println(foundPrimes);
+        int foundPrimes = 0;
+        for (int i = 1; i < NTHREADS; i++) {
+            flag = flag || pft[i].isAlive();
+            foundPrimes += pft[i].getPrimes().size();
+        }
+
     }
 }
