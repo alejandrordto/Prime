@@ -1,0 +1,1 @@
+1. las considiciones de carrera posibles son en los casos que los que se comparten recursos del tablero de juego,como los ratones,red arrows,rayos los cuales depende de la temporización relativa o el intercalado de múltiples hilos por el tiempo de ejecución y pueden canbiar la ejecucion deljuego. 
